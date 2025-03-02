@@ -1,98 +1,105 @@
 import { test, expect } from '@playwright/test';
 
-test('Priverion_Exercise',async({ page }) => {
 
+    const login = async (page) => {
 
-//Resize screen resolution 
-
-    await page.setViewportSize({width:1024,height:768})
-
-//Login in PriverionPlatform - Fill in email and password to access
-
-    await page.goto('https://hwazicsshi-testing.priverion.dev/login')
-    await page.getByRole('textbox',{name:'E-Mail Address'}).fill('jeison.herrera1592@gmail.com')
-    await page.getByRole('button',{name:'Next'}).click()
-    await page.getByRole('textbox',{name:'Password'}).fill('Jeisonpruebapriverion12345@')
-    await page.getByRole('button',{name:'Login'}).click()
-
-//Assertion Home page - Task Monitor Element
-
-    await expect(page.locator('.dashboard-title[data-cy="subtitle-task_monitor"]')).toBeVisible()
-
-//Go to Record of Processing Activities Module
-
-    await page.locator('.main-header__create-button').click()
-    await page.getByRole('link',{name:'Record of Processing Activities'}).waitFor()
-    await page.getByRole('link',{name:'Record of Processing Activities'}).click()
+        //Resize screen resolution 
     
-//Assertion Record of Processing Activities page - Save Button
+    await page.setViewportSize({width:1024,height:768})
+    
+        //Login in PriverionPlatform - Fill in email and password to access
+    
+        await page.goto('https://hwazicsshi-testing.priverion.dev/login')
+        await page.getByRole('textbox',{name:'E-Mail Address'}).fill('jeison.herrera1592@gmail.com')
+        await page.getByRole('button',{name:'Next'}).click()
+        await page.getByRole('textbox',{name:'Password'}).fill('Jeisonpruebapriverion12345@')
+        await page.getByRole('button',{name:'Login'}).click()
+    
+        //Assertion Home page - Task Monitor Element
+    
+        await expect(page.locator('.dashboard-title[data-cy="subtitle-task_monitor"]')).toBeVisible()
+    }
 
-    await expect(page.getByRole('button',{name:'Save'})).toBeVisible()
+    test.beforeEach(async ({ page }) => {
+        await login(page)
+    })
+    
 
-//Fill form and save to create the new register
+    test('fill and create ROPA record test',async({ page }) => {
 
-    //Select dropdown status value
+    //Fill form and save to create the new register
 
-    const SelectValue_drpdwn_status_ropa = await page.locator('[data-cy="select-type-status"]')
+        //Go to Record of Processing Activities Module
+    
+        await page.locator('.main-header__create-button').click()
+        await page.getByRole('link',{name:'Record of Processing Activities'}).waitFor()
+        await page.getByRole('link',{name:'Record of Processing Activities'}).click()
+        
+        //Assertion Record of Processing Activities page - Save Button
+        
+        await expect(page.getByRole('button',{name:'Save'})).toBeVisible()
 
-    const SelectValueInput = await SelectValue_drpdwn_status_ropa.locator('input[role="combobox"]')
-    await SelectValueInput.click()
+        //Select dropdown status value
 
-    //Validate the List is beeing show on the screen
-    const SelectOptions = await SelectValue_drpdwn_status_ropa.locator('[role="listbox"]')
-    await SelectOptions.waitFor({ state: 'visible' })
+        const SelectValue_drpdwn_status_ropa = await page.locator('[data-cy="select-type-status"]')
 
-    //Choose option - 0 Draft 1 Active 2 Review 3 Inactive
-    const Option = await SelectOptions.locator('#react-select-3-option-1')
-    await Option.click()
+        const SelectValueInput = await SelectValue_drpdwn_status_ropa.locator('input[role="combobox"]')
+        await SelectValueInput.click()
 
-    //Select type dropdown list 
+        //Validate the List is beeing show on the screen
+        const SelectOptions = await SelectValue_drpdwn_status_ropa.locator('[role="listbox"]')
+        await SelectOptions.waitFor({ state: 'visible' })
 
-    const SelectValue_drpdwn_type_ropa = await page.locator('[data-cy="select-type-type"]')
+        //Choose option - 0 Draft 1 Active 2 Review 3 Inactive
+        const Option = await SelectOptions.locator('#react-select-3-option-1')
+        await Option.click()
 
-    const SelectValueInput_type = await SelectValue_drpdwn_type_ropa.locator('input[role="combobox"]')
-    await SelectValueInput_type.click()
+        //Select type dropdown list 
 
-    //Validate the List is beeing show on the screen
-    const SelectOptions_type = await SelectValue_drpdwn_type_ropa.locator('[role="listbox"]')
-    await SelectOptions_type.waitFor({ state: 'visible' })
+        const SelectValue_drpdwn_type_ropa = await page.locator('[data-cy="select-type-type"]')
 
-    //Choose option - 0 Processor 1 Controller 2 Joint Controller 
+        const SelectValueInput_type = await SelectValue_drpdwn_type_ropa.locator('input[role="combobox"]')
+        await SelectValueInput_type.click()
 
-    const Option_type = await SelectOptions_type.locator('#react-select-5-option-2')
-    await Option_type.click()
+        //Validate the List is beeing show on the screen
+        const SelectOptions_type = await SelectValue_drpdwn_type_ropa.locator('[role="listbox"]')
+        await SelectOptions_type.waitFor({ state: 'visible' })
 
-    //Select Target Risk dropdown list 
+        //Choose option - 0 Processor 1 Controller 2 Joint Controller 
 
-    const SelectValue_drpdwn_select_type_target_risk = await page.locator('[data-cy="select-type-regulations"]')
+        const Option_type = await SelectOptions_type.locator('#react-select-5-option-2')
+        await Option_type.click()
 
-    const SelectValueInput_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('input[role="combobox"]')
-    await SelectValueInput_type_risk.click()
+        //Select Target Risk dropdown list 
 
-    //Validate the List is beeing show on the screen
-    const SelectOptions_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('[role="listbox"]')
-    await SelectOptions_type_risk.waitFor({ state: 'visible' })
+        const SelectValue_drpdwn_select_type_target_risk = await page.locator('[data-cy="select-type-target-risk-dropdown"]')
 
-    //Choose option - 0 Low 1 Medium 2 High 3 Very High 
+        const SelectValueInput_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('input[role="combobox"]')
+        await SelectValueInput_type_risk.click()
 
-    const Option_type_risk = await SelectOptions_type_risk.locator('#react-select-8-option-2')
-    await Option_type_risk.click()
+        //Validate the List is beeing show on the screen
+        const SelectOptions_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('[role="listbox"]')
+        await SelectOptions_type_risk.waitFor({ state: 'visible' })
 
-    await page.pause()
+        //Choose option - 0 Low 1 Medium 2 High 3 Very High 
 
-    // Values for the form
-    const name = 'Customer Support_1'
-    const description_proccess = 'Collecting and managing customer data like name, contact details, issue descriptions to provide technical support.'
-    const NeedToProccess = 'Critical to resolving customer issues, improving customer satisfaction, and enhancing service quality.'
+        const Option_type_risk = await SelectOptions_type_risk.locator('#react-select-8-option-1')
+        await Option_type_risk.click()
 
-    //Fill Textbox
-    await page.getByRole('textbox',{name:'Name'}).fill(name)
-    await page.getByRole('textbox',{name:'Brief description of processing'}).fill(description_proccess)
-    await page.getByRole('textbox',{name:'Brief Description why this processing is important to your organization'}).fill(NeedToProccess)
+        // Values for the form
+        const name = 'Customer Support_2'
+        const description_proccess = 'Collecting and managing customer data like name, contact details, issue descriptions to provide technical support.'
+        const NeedToProccess = 'Critical to resolving customer issues, improving customer satisfaction, and enhancing service quality.'
 
-    await page.getByRole('button',{name:'Save'}).click()
+        //Fill Textbox
+        await page.getByRole('textbox',{name:'Name'}).fill(name)
+        await page.getByRole('textbox',{name:'Brief description of processing'}).fill(description_proccess)
+        await page.getByRole('textbox',{name:'Brief Description why this processing is important to your organization'}).fill(NeedToProccess)
 
-    await page.pause()
+        await page.getByRole('button',{name:'Save'}).click()
 
     
 })
+
+
+
