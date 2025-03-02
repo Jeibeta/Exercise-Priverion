@@ -97,9 +97,29 @@ import { test, expect } from '@playwright/test';
         await page.getByRole('textbox',{name:'Brief Description why this processing is important to your organization'}).fill(NeedToProccess)
 
         await page.getByRole('button',{name:'Save'}).click()
-
     
 })
 
+    test('Delete Record ROPA',async({ page }) => {
 
+        await page.getByRole('button',{name:'Document'}).click()
+        await page.getByRole('link',{name:'Record of Processing Activities'}).click()
+
+        await expect(page.getByRole('button',{name:'Create'})).toBeVisible()
+
+        await page.locator('input[name="select-all"]').click()
+        
+        const DeleteIcon = page.locator('[data-icon="trash"]')
+
+            if (DeleteIcon){
+
+                await DeleteIcon.click()
+            }
+
+        await page.pause()
+
+
+
+
+    })
 
