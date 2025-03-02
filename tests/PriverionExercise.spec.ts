@@ -33,17 +33,50 @@ test('Priverion_Exercise',async({ page }) => {
 
     //Select dropdown status value
 
-    const SelectValue_drpdwn_status_ropa = await page.locator('[data-cy="select-type-status"]');
+    const SelectValue_drpdwn_status_ropa = await page.locator('[data-cy="select-type-status"]')
 
-// Hacer clic en el input para abrir el dropdown
-    const SelectValueInput = await SelectValue_drpdwn_status_ropa.locator('input');
-    await SelectValueInput.click();
+    const SelectValueInput = await SelectValue_drpdwn_status_ropa.locator('input[role="combobox"]')
+    await SelectValueInput.click()
 
-    const SelectOptions = await SelectValue_drpdwn_status_ropa.locator('[role="listbox"]');
-    await SelectOptions.waitFor({ state: 'visible' });
+    //Validate the List is beeing show on the screen
+    const SelectOptions = await SelectValue_drpdwn_status_ropa.locator('[role="listbox"]')
+    await SelectOptions.waitFor({ state: 'visible' })
 
-    const Option = await SelectOptions.locator('#react-select-3-option-1');
-    await Option.click();
+    //Choose option - 0 Draft 1 Active 2 Review 3 Inactive
+    const Option = await SelectOptions.locator('#react-select-3-option-1')
+    await Option.click()
+
+    //Select type dropdown list 
+
+    const SelectValue_drpdwn_type_ropa = await page.locator('[data-cy="select-type-type"]')
+
+    const SelectValueInput_type = await SelectValue_drpdwn_type_ropa.locator('input[role="combobox"]')
+    await SelectValueInput_type.click()
+
+    //Validate the List is beeing show on the screen
+    const SelectOptions_type = await SelectValue_drpdwn_type_ropa.locator('[role="listbox"]')
+    await SelectOptions_type.waitFor({ state: 'visible' })
+
+    //Choose option - 0 Processor 1 Controller 2 Joint Controller 
+
+    const Option_type = await SelectOptions_type.locator('#react-select-5-option-2')
+    await Option_type.click()
+
+    //Select Target Risk dropdown list 
+
+    const SelectValue_drpdwn_select_type_target_risk = await page.locator('[data-cy="select-type-regulations"]')
+
+    const SelectValueInput_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('input[role="combobox"]')
+    await SelectValueInput_type_risk.click()
+
+    //Validate the List is beeing show on the screen
+    const SelectOptions_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('[role="listbox"]')
+    await SelectOptions_type_risk.waitFor({ state: 'visible' })
+
+    //Choose option - 0 Low 1 Medium 2 High 3 Very High 
+
+    const Option_type_risk = await SelectOptions_type_risk.locator('#react-select-8-option-2')
+    await Option_type_risk.click()
 
     await page.pause()
 
