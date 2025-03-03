@@ -102,19 +102,25 @@ import { test, expect } from '@playwright/test';
 
     test('Delete Record ROPA',async({ page }) => {
 
+        //goto ROPA documents section
         await page.getByRole('button',{name:'Document'}).click()
         await page.getByRole('link',{name:'Record of Processing Activities'}).click()
 
+        //Assertion create button
         await expect(page.getByRole('button',{name:'Create'})).toBeVisible()
 
+        //Select records to delete
         await page.locator('input[name="select-all"]').click()
         
-        const DeleteIcon = page.locator('[data-icon="trash"]')
+        //Identify if the delete Icon is been show on the screen
+        const DeleteIcon = await page.locator('[data-icon="trash"]')
+        await DeleteIcon.waitFor({state:'visible'})
+        await DeleteIcon.click()
 
-            if (DeleteIcon){
-
-                await DeleteIcon.click()
-            }
+        //Confirm Action
+        const Check = await page.locator('svg[data-icon="circle-check"]')
+        await Check.waitFor({state:'visible'})
+        await Check.click()
 
         await page.pause()
 
