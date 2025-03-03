@@ -24,6 +24,92 @@ import { test, expect } from '@playwright/test';
         await login(page)
     })
     
+    test('fill and create record test ROPA screen ',async({ page }) => {
+
+            //Fill form and save to create the new register
+        
+            //goto ROPA documents section
+            await page.getByRole('button',{name:'Document'}).click()
+            await page.getByRole('link',{name:'Record of Processing Activities'}).click()
+
+            //Assertion create button
+            await expect(page.getByRole('button',{name:'Create'})).toBeVisible()
+
+            //Other way for create a record ROPA screen 
+            
+            const createButton = await page.locator('[id="overview-creation-button"]')
+            await createButton.waitFor({state:'visible'})
+            await createButton.click()
+        
+            const createROPA = await page.getByRole('menuitem',{name:'Create ROPA'})
+            await createROPA.waitFor({state:'visible'})
+            await createROPA.click()
+
+            //Assertion Record of Processing Activities page - Save Button
+        
+            await expect(page.getByRole('button',{name:'Save'})).toBeVisible()
+
+    
+            //Select dropdown status value
+    
+            const SelectValue_drpdwn_status_ropa = await page.locator('[data-cy="select-type-status"]')
+    
+            const SelectValueInput = await SelectValue_drpdwn_status_ropa.locator('input[role="combobox"]')
+            await SelectValueInput.click()
+    
+            //Validate the List is beeing show on the screen
+            const SelectOptions = await SelectValue_drpdwn_status_ropa.locator('[role="listbox"]')
+            await SelectOptions.waitFor({ state: 'visible' })
+    
+            //Choose option - 0 Draft 1 Active 2 Review 3 Inactive
+            const Option = await SelectOptions.locator('#react-select-3-option-1')
+            await Option.click()
+    
+            //Select type dropdown list 
+    
+            const SelectValue_drpdwn_type_ropa = await page.locator('[data-cy="select-type-type"]')
+    
+            const SelectValueInput_type = await SelectValue_drpdwn_type_ropa.locator('input[role="combobox"]')
+            await SelectValueInput_type.click()
+    
+            //Validate the List is beeing show on the screen
+            const SelectOptions_type = await SelectValue_drpdwn_type_ropa.locator('[role="listbox"]')
+            await SelectOptions_type.waitFor({ state: 'visible' })
+    
+            //Choose option - 0 Processor 1 Controller 2 Joint Controller 
+    
+            const Option_type = await SelectOptions_type.locator('#react-select-5-option-2')
+            await Option_type.click()
+    
+            //Select Target Risk dropdown list 
+    
+            const SelectValue_drpdwn_select_type_target_risk = await page.locator('[data-cy="select-type-target-risk-dropdown"]')
+    
+            const SelectValueInput_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('input[role="combobox"]')
+            await SelectValueInput_type_risk.click()
+    
+            //Validate the List is beeing show on the screen
+            const SelectOptions_type_risk = await SelectValue_drpdwn_select_type_target_risk.locator('[role="listbox"]')
+            await SelectOptions_type_risk.waitFor({ state: 'visible' })
+    
+            //Choose option - 0 Low 1 Medium 2 High 3 Very High 
+    
+            const Option_type_risk = await SelectOptions_type_risk.locator('#react-select-8-option-1')
+            await Option_type_risk.click()
+    
+            // Values for the form
+            const name = 'Customer Support_4'
+            const description_proccess = 'Collecting and managing customer data like name, contact details, issue descriptions to provide technical support.'
+            const NeedToProccess = 'Critical to resolving customer issues, improving customer satisfaction, and enhancing service quality.'
+    
+            //Fill Textbox
+            await page.getByRole('textbox',{name:'Name'}).fill(name)
+            await page.getByRole('textbox',{name:'Brief description of processing'}).fill(description_proccess)
+            await page.getByRole('textbox',{name:'Brief Description why this processing is important to your organization'}).fill(NeedToProccess)
+    
+            await page.getByRole('button',{name:'Save'}).click()
+        
+    })
 
     test('fill and create ROPA record test',async({ page }) => {
 
@@ -87,7 +173,7 @@ import { test, expect } from '@playwright/test';
         await Option_type_risk.click()
 
         // Values for the form
-        const name = 'Customer Support_2'
+        const name = 'Customer Support_5'
         const description_proccess = 'Collecting and managing customer data like name, contact details, issue descriptions to provide technical support.'
         const NeedToProccess = 'Critical to resolving customer issues, improving customer satisfaction, and enhancing service quality.'
 
@@ -122,10 +208,11 @@ import { test, expect } from '@playwright/test';
         await Check.waitFor({state:'visible'})
         await Check.click()
 
+        //Delete records sucess
+        const DeleteSucces = await page.locator('span:has-text("There is no data to load")')
+        await expect(DeleteSucces).toBeVisible()
+
         await page.pause()
-
-
-
 
     })
 
