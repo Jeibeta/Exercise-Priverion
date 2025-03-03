@@ -182,6 +182,7 @@ import { test, expect } from '@playwright/test';
         await page.getByRole('textbox',{name:'Brief description of processing'}).fill(description_proccess)
         await page.getByRole('textbox',{name:'Brief Description why this processing is important to your organization'}).fill(NeedToProccess)
 
+        //Saves and create
         await page.getByRole('button',{name:'Save'}).click()
     
 })
@@ -212,7 +213,35 @@ import { test, expect } from '@playwright/test';
         const DeleteSucces = await page.locator('span:has-text("There is no data to load")')
         await expect(DeleteSucces).toBeVisible()
 
-        await page.pause()
-
+        
     })
 
+    test('Edit Record ROPA',async({ page }) => {
+
+        //goto ROPA documents section
+        await page.getByRole('button',{name:'Document'}).click()
+        await page.getByRole('link',{name:'Record of Processing Activities'}).click()
+
+        //Assertion create button
+        await expect(page.getByRole('button',{name:'Create'})).toBeVisible()
+
+        //Select Record To edit - row position
+        const RecordToEdit = await page.locator('[data-cy="row-0"]')
+        await RecordToEdit.click()
+
+        //Press edit button and go to Edit screen
+        const EditButton = await page.getByRole('button',{name:'Edit'})
+        await expect(EditButton).toBeVisible()
+        await EditButton.click()
+
+        //Assertion Record of Processing Activities page - Save Button
+         await expect(page.getByRole('button',{name:'Save'})).toBeVisible()
+        
+        //Time for doing changes on the form 
+        await page.waitForTimeout(3000)
+
+        //Saves changes
+        await page.getByRole('button',{name:'Save'}).click()
+        await expect(EditButton).toBeVisible()
+
+    })
